@@ -36,8 +36,9 @@ defmodule ExCodapay.PayChannel do
     |> elem(1)
   end
 
-  def supported_pay_channels(country, pay_type \\ nil)
-  def supported_pay_channels(:indonesia, :bank), do: @indonesia_bank_numbers
-  def supported_pay_channels(:indonesia, :otc), do: @indonesia_otc_numbers
-  def supported_pay_channels(:indonesia, nil), do: @indonesia_numbers
+  def filter_pay_channels(country, pay_type \\ nil)
+  def filter_pay_channels(:indonesia, :bank), do: @indonesia_bank_numbers
+  def filter_pay_channels(:indonesia, :otc), do: @indonesia_otc_numbers
+  def filter_pay_channels(:indonesia, nil), do: @indonesia_numbers
+  def filter_pay_channels(_, _), do: []
 end

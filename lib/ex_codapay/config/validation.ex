@@ -60,6 +60,15 @@ defmodule ExCodapay.Config.Validation do
          %{data: %{country: country, pay_types: pay_types, pay_channels: pay_channels}} =
            changeset
        ) do
-    changeset
+    allowed_channels =
+      (pay_types || [])
+      |> Enum.map(&ExCodapay.PayChannel.filter_pay_channels(country, &1))
+      |> List.flatten()
+      |> Enum.uniq()
+
+    case length((pay_channels || []) -- allowed_channels) > 0 do
+      true -> add_error(changeset, "Has unsupported pay_channels")
+      false -> changeset
+    end
   end
 end
