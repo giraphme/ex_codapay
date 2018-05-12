@@ -5,8 +5,6 @@ defmodule ExCodapay.Config.Validation do
     |> validate_api_key()
     |> validate_country()
     |> validate_language()
-    |> validate_pay_types()
-    |> validate_pay_channels()
     |> take_config_from_changeset()
   end
 
@@ -39,36 +37,6 @@ defmodule ExCodapay.Config.Validation do
     |> case do
       true -> changeset
       false -> add_error(changeset, "Unsupported language in #{country}")
-    end
-  end
-
-  @valid_pay_types ~w(direct_carrier_billing bank otc vr)a
-  defp validate_pay_types(%{data: %{pay_types: pay_types}} = changeset) do
-    cond do
-      is_nil(pay_types) ->
-        add_error(changeset, "Can't find pay_types")
-
-      length(pay_types -- @valid_pay_types) > 0 ->
-        add_error(changeset, "Has unsupported pay_type")
-
-      true ->
-        changeset
-    end
-  end
-
-  defp validate_pay_channels(
-         %{data: %{country: country, pay_types: pay_types, pay_channels: pay_channels}} =
-           changeset
-       ) do
-    allowed_channels =
-      (pay_types || [])
-      |> Enum.map(&ExCodapay.PayChannel.filter_pay_channels(country, &1))
-      |> List.flatten()
-      |> Enum.uniq()
-
-    case length((pay_channels || []) -- allowed_channels) > 0 do
-      true -> add_error(changeset, "Has unsupported pay_channels")
-      false -> changeset
     end
   end
 end
