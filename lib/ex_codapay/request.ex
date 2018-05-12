@@ -1,5 +1,5 @@
 defmodule ExCodapay.Request do
-  defstruct ~w(config order_id merchant_name msisdn email type items)a
+  defstruct ~w(config order_id merchant_name msisdn email type pay_type pay_channel items)a
 
   def prepare!(config, params) do
     {:ok, request} = prepare(config, params)
@@ -25,5 +25,55 @@ defmodule ExCodapay.Request do
 
   def prepare(_, _) do
     {:error, "Arguments are missing"}
+  end
+
+  def send(request, pay_type, args \\ [])
+
+  @pay_type 1
+  def send(%__MODULE__{} = _request, :direct_carrier_billing, _args) do
+    raise ArgumentError, "Unsupported"
+  end
+
+  @pay_type 2
+  def send(%__MODULE__{} = request, :bank_transfer, pay_channel: pay_channel)
+      when is_integer(pay_channel) do
+    request
+    |> put_pay_type(@pay_type)
+    |> put_pay_channel(pay_channel)
+    |> ExCodapay.API.call()
+  end
+
+  @pay_type 3
+  def send(%__MODULE__{} = request, :otc_payment, pay_channel: pay_channel)
+      when is_integer(pay_channel) do
+    request
+    |> put_pay_type(@pay_type)
+    |> put_pay_channel(pay_channel)
+    |> ExCodapay.API.call()
+  end
+
+  def to_json(%__MODULE__{} = request) do
+    request
+    |> Map.from_struct()
+    |> Map.take(~w(order_id merchant_name msisdn email type pay_type pay_channel)a)
+    |> Map.merge(%{
+      api_key: request.config.api_key,
+      lang: request.config.language,
+      items:
+        request.items
+        |> Enum.map(fn
+          %ExCodapay.Item{} = item -> Map.from_struct(item)
+          item -> item
+        end)
+    })
+    |> Jason.encode!()
+  end
+
+  defp put_pay_type(%ExCodapay.Request{} = request, pay_type) do
+    put_in(request.pay_type, pay_type)
+  end
+
+  defp put_pay_channel(%ExCodapay.Request{} = request, bank_id) do
+    put_in(request.pay_channel, bank_id)
   end
 end
