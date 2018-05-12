@@ -3,6 +3,7 @@ defmodule ExCodapay.ConfigTest do
 
   describe "ExCodapay.Config.new/1" do
     test "get {:ok, %ExCodapay.Config{}}" do
+      System.delete_env("CODAPAY_API_KEY")
       assert {:error, "Can't find api_key"} = ExCodapay.Config.new()
       System.put_env("CODAPAY_API_KEY", "API_KEY_FROM_SYSTEM_ENV")
 
