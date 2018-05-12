@@ -1,0 +1,5 @@
+%{
+  "fs": {:hex, :fs, "2.12.0", "ad631efacc9a5683c8eaa1b274e24fa64a1b8eb30747e9595b93bec7e492e25e", [:rebar3], [], "hexpm"},
+  "mix_test_watch": {:git, "https://github.com/ignota/mix-test.watch.git", "8ee5c331059e821830a325cd59e87821b3434f88", []},
+  "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], [], "hexpm"},
+}
