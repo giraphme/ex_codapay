@@ -27,6 +27,11 @@ defmodule ExCodapay.Request do
     {:error, "Arguments are missing"}
   end
 
+  def send!(request, pay_type, args \\ []) do
+    {:ok, response} = send(request, pay_type, args)
+    response
+  end
+
   def send(request, pay_type, args \\ [])
 
   @pay_type 1
