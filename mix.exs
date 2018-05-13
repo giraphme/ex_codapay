@@ -7,6 +7,14 @@ defmodule ExCodapay.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
+      description: "Codapay API wrapper for Elixir",
+      package: [
+        maintainers: ["Tamaki Maeda"],
+        licenses: ["MIT"],
+        links: %{
+          "Codapay" => "https://www.codapay.com"
+        }
+      ],
       deps: deps()
     ]
   end
