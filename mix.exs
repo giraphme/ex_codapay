@@ -30,6 +30,7 @@ defmodule ExCodapay.MixProject do
       {:uuid, "~> 1.1"},
       {:httpoison, "~> 1.1"},
       {:jason, "~> 1.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false, github: "ignota/mix-test.watch"}
     ]
   end
