@@ -1,11 +1,8 @@
 # ExCodapay
 
-**TODO: Add description**
+If you want to more information, you can be found at [https://hexdocs.pm/ex_codapay](https://hexdocs.pm/ex_codapay).
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ex_codapay` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +12,47 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ex_codapay](https://hexdocs.pm/ex_codapay).
+## Configuration
 
+```elixir
+config :ex_codapay,
+  api_key: {:system, "CODAPAY_API_KEY"},
+  country: :indonesia, # :indonesia, :malaysia, :singapore, :thailand, :philippines, :vietnam
+  language: :in, # :en, :in, :zh, :th, :tl, :vi
+  sandbox_mode: true # false
+```
+
+## Basic usage
+
+### Direct Billing
+
+Not supported yet.
+
+### Bank, OTC
+
+```elixir
+config = ExCodapay.Config.new!()
+item = %ExCodapay.Item{code: "abc", name: "excellent book", price: 100_000}
+bank_id = ExCodapay.PayChannel.to_id("BCA")
+
+response =
+  config
+  |> ExCodapay.Request.prepare!(items: [item])
+  |> ExCodapay.Request.send!(:bank_transfer, pay_channel: bank_id)
+
+# store txn_id and order_id to your system
+
+#--------
+
+# After receive the completion callback
+completed_callback = %ExCodapay.CompletedCallback{txn_id: "...", ...}
+order_id = find_from_your_system(completed_callback.txn_id)
+ExCodapay.CompletionCallback.check(completed_callback, config, order_id)
+```
+
+### For testing
+
+```elixir
+ExCodapay.Debugger.mock_completion_notification(config, txn_id: txn_id, order_id: order_id, ...)
+#=> %{"TxnId" => "...", ..., "Checksum" => "..."}
+```
