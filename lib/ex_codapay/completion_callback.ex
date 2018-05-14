@@ -34,6 +34,10 @@ defmodule ExCodapay.CompletionCallback do
        when is_binary(checksum) and is_binary(api_key) and is_integer(txn_id) and
               is_binary(order_id) and is_integer(result_code) do
     seed = Enum.join([txn_id, api_key, order_id, result_code])
-    Base.encode16(:crypto.hash(:md5, seed), case: :lower) == checksum
+
+    case Base.encode16(:crypto.hash(:md5, seed), case: :lower) == checksum do
+      true -> :ok
+      false -> {:error, "Invalid request"}
+    end
   end
 end

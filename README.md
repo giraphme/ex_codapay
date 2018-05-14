@@ -37,7 +37,7 @@ bank_id = ExCodapay.PayChannel.to_id("BCA")
 
 response =
   config
-  |> ExCodapay.Request.prepare!(items: [item])
+  |> ExCodapay.Request.prepare!(merchant_name: merchant_name, msisdn: msisdn, email: email, items: [item])
   |> ExCodapay.Request.send!(:bank_transfer, pay_channel: bank_id)
 
 # store txn_id and order_id to your system
