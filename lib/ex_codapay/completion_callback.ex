@@ -27,7 +27,7 @@ defmodule ExCodapay.CompletionCallback do
     do: put_in(m.result_code, String.to_integer(b))
 
   defp validate_result_code(%__MODULE__{result_code: 0}), do: :ok
-  defp validate_result_code(%__MODULE__{result_code: 1}), do: {:error, "Payment failed"}
+  defp validate_result_code(%__MODULE__{result_code: _}), do: {:error, "Payment failed"}
 
   defp validate_checksum(
          %__MODULE__{checksum: checksum, txn_id: txn_id, result_code: result_code},
