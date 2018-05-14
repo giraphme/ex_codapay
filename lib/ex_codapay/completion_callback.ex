@@ -24,7 +24,7 @@ defmodule ExCodapay.CompletionCallback do
   end
 
   defp validate_result_code(%__MODULE__{result_code: b} = m) when is_binary(b),
-    do: put_in(m.result_code, String.to_integer(b))
+    do: validate_result_code(put_in(m.result_code, String.to_integer(b)))
 
   defp validate_result_code(%__MODULE__{result_code: 0}), do: :ok
   defp validate_result_code(%__MODULE__{result_code: _}), do: {:error, "Payment failed"}
