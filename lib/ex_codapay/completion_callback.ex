@@ -33,9 +33,7 @@ defmodule ExCodapay.CompletionCallback do
          %__MODULE__{checksum: checksum, txn_id: txn_id, result_code: result_code},
          api_key: api_key,
          order_id: order_id
-       )
-       when is_binary(checksum) and is_binary(api_key) and is_integer(txn_id) and
-              is_binary(order_id) and is_integer(result_code) do
+       ) do
     seed = Enum.join([txn_id, api_key, order_id, result_code])
 
     case Base.encode16(:crypto.hash(:md5, seed), case: :lower) == checksum do
