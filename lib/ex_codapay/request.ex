@@ -23,8 +23,8 @@ defmodule ExCodapay.Request do
      })}
   end
 
-  def prepare(_, _) do
-    {:error, "Arguments are missing"}
+  def prepare(_, attrs) do
+    {:error, "Arguments are missing (#{inspect(attrs)})"}
   end
 
   def send!(request, pay_type, args \\ []) do
