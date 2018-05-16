@@ -67,7 +67,7 @@ defmodule ExCodapay.Request do
       items:
         request.items
         |> Enum.map(fn
-          %ExCodapay.Item{} = item -> ExCodapay.Item.to_map_for_json(item) |> IO.inspect()
+          %ExCodapay.Item{} = item -> ExCodapay.Item.to_map_for_json(item)
           item -> item
         end)
     })

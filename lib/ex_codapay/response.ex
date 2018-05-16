@@ -45,6 +45,6 @@ defmodule ExCodapay.Response do
     end
   end
 
-  def success?(%__MODULE__{result_code: 204}), do: true
+  def success?(%__MODULE__{result_code: 0}), do: true
   def success?(%__MODULE__{result_code: _}), do: false
 end
