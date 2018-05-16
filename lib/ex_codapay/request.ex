@@ -16,7 +16,7 @@ defmodule ExCodapay.Request do
        config: config,
        order_id: params[:order_id] || UUID.uuid4(),
        merchant_name: merchant_name,
-       msisdn: msisdn,
+       msisdn: format_sms_number(msisdn),
        email: email,
        items: items,
        type: 2
@@ -80,5 +80,11 @@ defmodule ExCodapay.Request do
 
   defp put_pay_channel(%ExCodapay.Request{} = request, bank_id) do
     put_in(request.pay_channel, bank_id)
+  end
+
+  defp format_sms_number(sms_number) when is_binary(sms_number) do
+    sms_number
+    |> String.replace(" ", "")
+    |> String.replace("-", "")
   end
 end
