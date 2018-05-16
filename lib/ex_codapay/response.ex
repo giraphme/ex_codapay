@@ -8,6 +8,8 @@ defmodule ExCodapay.Response do
     :total_price,
     :payment_code,
     :profile,
+    :raw_request_body,
+    :request_url,
     :raw_response_body,
     :response_status_code,
     :request
@@ -15,7 +17,8 @@ defmodule ExCodapay.Response do
 
   def from_httpostion(
         {:ok, %HTTPoison.Response{body: body} = response},
-        %ExCodapay.Request{} = request
+        %ExCodapay.Request{} = request,
+        raw_request_body
       ) do
     with {:ok, parsed_body} <- Jason.decode(body) do
       response = %ExCodapay.Response{
@@ -27,6 +30,8 @@ defmodule ExCodapay.Response do
         total_price: parsed_body["total_price"],
         payment_code: parsed_body["profile"]["payment_code"],
         profile: parsed_body["profile"],
+        request_url: response.request_url,
+        raw_request_body: raw_request_body,
         response_status_code: response.status_code,
         raw_response_body: body,
         request: request
