@@ -1,9 +1,10 @@
 defmodule ExCodapay.Debugger do
-  def mock_completion_notification(
-        %ExCodapay.Config{} = config,
-        [txn_id: txn_id, order_id: order_id] = attrs
-      )
-      when is_list(attrs) and is_integer(txn_id) and is_binary(order_id) do
+  def mock_completion_notification(%ExCodapay.Config{} = config, attrs) do
+    do_mock_completion_notification(config, attrs[:txn_id], attrs[:order_id], attrs)
+  end
+
+  defp do_mock_completion_notification(config, txn_id, order_id, attrs)
+       when is_list(attrs) and is_integer(txn_id) and is_binary(order_id) do
     mock = %{
       "TxnId" => txn_id,
       "OrderId" => order_id,
