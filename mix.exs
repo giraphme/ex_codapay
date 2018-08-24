@@ -4,7 +4,7 @@ defmodule ExCodapay.MixProject do
   def project do
     [
       app: :ex_codapay,
-      version: "0.1.12",
+      version: "0.1.13",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       description: "Codapay API wrapper for Elixir",
@@ -28,10 +28,10 @@ defmodule ExCodapay.MixProject do
   defp deps do
     [
       {:uuid, "~> 1.1"},
-      {:httpoison, "~> 1.1"},
-      {:jason, "~> 1.0"},
+      {:httpoison, "~> 1.2"},
+      {:jason, "~> 1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:mix_test_watch, "~> 0.5", only: :dev, runtime: false, github: "ignota/mix-test.watch"}
+      {:mix_test_watch, "~> 0.5", only: :dev, runtime: false}
     ]
   end
 end
